@@ -21,7 +21,7 @@ function App() {
 
   const selectedUser = user[1]?.id;
 
-  console.log(selectedUser);
+
 
   return (
     <BlogContext.Provider

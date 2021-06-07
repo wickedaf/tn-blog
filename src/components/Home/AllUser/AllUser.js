@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import { faSort } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import { BlogContext } from "../../../App";
 
@@ -8,6 +10,40 @@ const AllUser = () => {
   const [filteredData, setFilteredData] = useState(user);
   const [currentPage, setCurrentPage] = useState(1);
   const [userPerPage] = useState(3);
+  const [sortConfig, setSortConfig] = useState(null);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+
+    let sortableItems = [...user];
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    setUser(sortableItems);
+  };
+
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
 
   const handleSearch = (event) => {
     let searchStr = event.target.value.toLowerCase();
@@ -54,23 +90,39 @@ const AllUser = () => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
+                <th scope="col">
+                  <button
+                    type="button"
+                    onClick={() => requestSort("name")}
+                    className={getClassNamesFor("name")  + 'btn bg-white border-0 rounded'}
+                  >
+                    Name <FontAwesomeIcon icon={faSort}></FontAwesomeIcon>
+                  </button>
+                </th>
+                <th scope="col">
+                  <button
+                    type="button"
+                    onClick={() => requestSort("email")}
+                    className={getClassNamesFor("email") + 'btn bg-white border-0 rounded'}
+                  >
+                    Email <FontAwesomeIcon icon={faSort}></FontAwesomeIcon>
+                  </button>
+                </th>
                 <th scope="col">Website</th>
               </tr>
             </thead>
             <tbody>
               {filteredData.length === 0
                 ? userList.map((ud, index) => (
-                  <tr>
-                    <th scope="row">{index + 1}</th>
-                    <td>
-                      <Link to={`/profile/${ud.id}`}>{ud.name}</Link>
-                    </td>
-                    <td>{ud.email}</td>
-                    <td>{ud.website}</td>
-                  </tr>
-                ))
+                    <tr>
+                      <th scope="row">{index + 1}</th>
+                      <td>
+                        <Link to={`/profile/${ud.id}`}>{ud.name}</Link>
+                      </td>
+                      <td>{ud.email}</td>
+                      <td>{ud.website}</td>
+                    </tr>
+                  ))
                 : filteredData.map((fd, index) => (
                     <tr>
                       <th scope="row">{index + 1}</th>
@@ -80,8 +132,7 @@ const AllUser = () => {
                       <td>{fd.email}</td>
                       <td>{fd.website}</td>
                     </tr>
-                  ))
-                }
+                  ))}
             </tbody>
           </table>
           <div className="d-flex justify-content-center">
