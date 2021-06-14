@@ -14,14 +14,14 @@ function App() {
   const [post, setPost] = useState([]);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((res) => res.json())
-      .then((data) => setUser(data));
+
+setTimeout(()=>{
+  fetch("https://jsonplaceholder.typicode.com/users")
+  .then((res) => res.json())
+  .then((data) => setUser(data));
+      }, 2000)
+    
   }, []);
-
-  const selectedUser = user[1]?.id;
-
-
 
   return (
     <BlogContext.Provider

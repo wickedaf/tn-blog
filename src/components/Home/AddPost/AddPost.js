@@ -27,7 +27,7 @@ const AddPost = () => {
       <div className="row justify-content-center">
         <form className="col-md-6" onSubmit={(event) => handleSubmit(event)}>
           <div className="mb-3">
-            <label for="postTitle" className="form-label">
+            <label htmlFor="postTitle" className="form-label">
               Title
             </label>
             <input
@@ -38,7 +38,7 @@ const AddPost = () => {
             />
           </div>
           <div className="mb-3">
-            <label for="postDescription" className="form-label">
+            <label htmlFor="postDescription" className="form-label">
               Description
             </label>
             <textarea

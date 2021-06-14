@@ -1,16 +1,32 @@
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link} from "react-router-dom";
 import { BlogContext } from "../../../App";
 
 const AllUser = () => {
   const { userData, postData } = useContext(BlogContext);
   const [user, setUser] = userData;
-  const [filteredData, setFilteredData] = useState(user);
+  const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [userPerPage] = useState(3);
   const [sortConfig, setSortConfig] = useState(null);
+
+   // Get current posts
+   const indexOfLastItem = currentPage * userPerPage;
+   const indexOfFirstItem = indexOfLastItem - userPerPage;
+   const userList = user.slice(indexOfFirstItem, indexOfLastItem);
+   
+
+ 
+   // Change page
+   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+ 
+   const pageNumbers = [];
+ 
+   for (let i = 1; i <= Math.ceil(user.length / userPerPage); i++) {
+     pageNumbers.push(i);
+   }
 
   const requestSort = (key) => {
     let direction = "ascending";
@@ -58,19 +74,7 @@ const AllUser = () => {
     setFilteredData(result);
   };
 
-  // Get current posts
-  const indexOfLastItem = currentPage * userPerPage;
-  const indexOfFirstItem = indexOfLastItem - userPerPage;
-  const userList = user.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const pageNumbers = [];
-
-  for (let i = 1; i <= Math.ceil(user.length / userPerPage); i++) {
-    pageNumbers.push(i);
-  }
+ 
 
   return (
     <div className="container my-5">
@@ -114,7 +118,7 @@ const AllUser = () => {
             <tbody>
               {filteredData.length === 0
                 ? userList.map((ud, index) => (
-                    <tr>
+                    <tr key={index}>
                       <th scope="row">{index + 1}</th>
                       <td>
                         <Link to={`/profile/${ud.id}`}>{ud.name}</Link>
@@ -124,7 +128,7 @@ const AllUser = () => {
                     </tr>
                   ))
                 : filteredData.map((fd, index) => (
-                    <tr>
+                    <tr key={index}>
                       <th scope="row">{index + 1}</th>
                       <td>
                         <Link to={`/profile/${fd.id}`}>{fd.name}</Link>
