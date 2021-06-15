@@ -26,7 +26,7 @@ const NavBar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
           </ul>
-          <div className="d-flex">
+          <div className="text-center">
             <li className="nav-item">
               <Link className="text-decoration-none text-white" to="/addPost">Add Post</Link>
             </li>
