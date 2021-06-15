@@ -9,7 +9,7 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
-        <Link href="/">TN Blog</Link>
+        <Link to="/">TN Blog</Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -24,19 +24,19 @@ const NavBar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-lg-auto ms-md-auto text-sm-center mb-2 mb-lg-0">
             <li className="nav-item px-2">
-              <Link className="text-decoration-none text-white" href="/addPost">
+              <Link className="text-decoration-none text-white" to="/addPost">
                 Add Post
               </Link>
             </li>
             <li className="nav-item px-2">
-              <Link className="text-decoration-none text-white" href="/allUser">
+              <Link className="text-decoration-none text-white" to="/allUser">
                 All User
               </Link>
             </li>
             <li className="nav-item px-2">
               <Link
                 className="text-decoration-none text-white"
-                href={`/profile/2`}
+                to={`/profile/2`}
               >
                 User - 2
               </Link>
